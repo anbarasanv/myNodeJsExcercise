@@ -26,7 +26,6 @@ exports.updateDocument = function (query, toUpdateDoc, collection, options, call
 // Function to get document
 
 exports.getOneDoc = function (query, collection, selection, callback){
-	console.log("inside data");
 	collection.findOne(query, selection).exec(function(err, doc){
 		if(err){
 			callback(err, "");
@@ -38,8 +37,8 @@ exports.getOneDoc = function (query, collection, selection, callback){
 
 // Function to get document
 
-exports.getAll = function (collection, selection, app, callback){
-	collection.find({}, selection).exec(function(err, doc){
+exports.getAll = function (query, collection, selection, callback){
+	collection.find(query, selection).exec(function(err, doc){
 		if(err){
 			callback(err, "");
 		} else {

@@ -70,3 +70,44 @@ exports.createUsers = (req,res) => {
         }
     });
 };
+
+exports.getSingleUser = (req, res) => {
+    let collection = req.app.schema.users;
+    let query = {
+        _id : req.params.userId
+    };
+    let selection = {};
+    req.app.crud.getOneDoc(query, collection, selection, (err, userDoc) => {
+        if (err) {
+            let response = {};
+            response.res = false;
+            response.result = err;
+            response.message = "Failed";
+            res.json(response);
+        } else {
+            let addressCollection = req.app.schema.addresses;
+            let query = {
+                userId : req.params.userId
+            };
+            let selection = {};
+            req.app.crud.getAll(query, addressCollection, selection, (err, addressDoc) => {
+                if (err) {
+                    let response = {};
+                    response.res = false;
+                    response.result = err;
+                    response.message = "Failed";
+                    res.json(response);
+                } else {
+                    let doc = {};
+                    doc.user = userDoc;
+                    doc.address = addressDoc;
+                    let response = {};
+                    response.res = true;
+                    response.result = doc;
+                    response.message = "Successfully found";
+                    res.json(response)
+                }
+            });
+        }
+    });
+};
